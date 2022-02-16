@@ -4,7 +4,7 @@ p.namefirst,
 p.namelast,
 sl.lgid,
 s.schoolname,
-coalesce(sum(sl.salary)::text::money::text,'unknown') as salary  
+coalesce(sum(sl.salary)::text::money::text,'unknown'):: money as salary  
 from people p
 inner join
 collegeplaying c
