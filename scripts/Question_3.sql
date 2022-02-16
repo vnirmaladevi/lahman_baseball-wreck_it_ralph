@@ -1,25 +1,27 @@
-with cte1 as (select teamid,sum(w) as win from teams
-where
-wswin='N' and
-yearid between 1970 and 2016
-group by teamid
-order by win desc)
-select max(win) from cte1
-
-with cte2 as(select teamid,sum(w) as win from teams
-where
-wswin='Y' and
-yearid between 1970 and 2016
-group by teamid
-order by win )
-select min(win) from cte2
-
-select *  from
-people p
-inner join 
-appa
-teams t
+select  
+p.playerid,
+p.namefirst,
+p.namelast,
+sl.lgid,
+s.schoolname,
+coalesce(sum(sl.salary)::text::money::text,'unknown') as salary  
+from people p
+inner join
+collegeplaying c
 on
-p.playerid=t.playerid
+p.playerid=c.playerid
+inner join
+schools s
+on
+c.schoolid=s.schoolid
+left outer join
+salaries sl
+on
+p.playerid=sl.playerid
+
 where
-wswin='Y' and
+sl.salary is not null and
+schoolname ilike '%vander%'
+group by p.playerid,p.namefirst,p.namelast,sl.lgid,
+s.schoolname
+order by salary desc
