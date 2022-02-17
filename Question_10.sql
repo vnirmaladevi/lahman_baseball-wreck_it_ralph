@@ -5,12 +5,15 @@ WITH career_high_hr AS (SELECT DISTINCT b.playerid, namefirst, namelast, COUNT(*
 					GROUP BY namefirst, namelast, b.playerid
 					HAVING COUNT(*) >= 10
 					ORDER BY homerun_career_high DESC)
-SELECT namefirst, namelast, hr
+SELECT batting.playerid, namefirst, namelast, hr
 FROM batting
 INNER JOIN career_high_hr
 ON career_high_hr.playerid = batting.playerid
 WHERE yearid = 2016
 AND hr >= 1
+AND seasons_played >= 10
+AND hr = homerun_career_high
 ORDER BY hr DESC;
+
 
 
