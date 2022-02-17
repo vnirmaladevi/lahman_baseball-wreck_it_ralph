@@ -1,10 +1,10 @@
 select  
-p.playerid,
-p.namefirst,
-p.namelast,
-sl.lgid,
-s.schoolname,
-coalesce(sum(sl.salary)::text::money::text,'unknown'):: money as salary  
+		p.playerid,
+		p.namefirst,
+		p.namelast,
+		sl.lgid,
+		s.schoolname,
+		sum(sl.salary)::text::money as salary  
 from people p
 inner join
 collegeplaying c
@@ -18,10 +18,10 @@ left outer join
 salaries sl
 on
 p.playerid=sl.playerid
-
 where
 sl.salary is not null and
 schoolname ilike '%vander%'
 group by p.playerid,p.namefirst,p.namelast,sl.lgid,
 s.schoolname
-order by salary desc
+order by salary desc limit 1;
+
